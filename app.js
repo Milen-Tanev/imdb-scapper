@@ -35,7 +35,7 @@ function getMoviesFromUrl(url) {
 
             modelsFactory.insertManySimpleMovies(dbMovies);
 
-            return wait(1000);
+            return wait(1500);
         })
         .then(() => {
             if (urlsQueue.isEmpty()) {
@@ -53,3 +53,33 @@ const asyncPagesCount = 15;
 
 Array.from({ length: asyncPagesCount })
     .forEach(() => getMoviesFromUrl(urlsQueue.pop()));
+
+
+function getDetailedMovieFromUrl(url) {
+    httpRequester.get(url)
+        .then((result) => {
+            return htmlParser.parseDetailedMovie({ body: result.body });
+        })
+        .then((info) => {
+            let movieToAdd = modelsFactory.getDetailedMovie(
+                info.imgSrc,
+                info.title,
+                info.summaryText,
+                info.genres,
+                info.releaseDate,
+                info.actors);
+
+            modelsFactory.insertDetailedMovie(movieToAdd);
+        });
+}
+
+modelsFactory.getAll()
+    .then((res) => {
+
+        for (let i = 0; i < res.length; i += 1) {
+
+            const currentUrl = `http://www.imdb.com/title/${res[i].imdbId}`;
+
+            getDetailedMovieFromUrl(currentUrl);
+        }
+    });
