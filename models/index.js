@@ -28,18 +28,5 @@ module.exports = {
             console.log(entry);
 
         });
-    },
-    getActor(name, image, description, movies) {
-        return new Actor({
-            name,
-            image,
-            description,
-            movies
-        });
-    },
-    insertActor(actor) {
-        actor.save();
-
-        console.log(`Inserted actor ${actor.name}`);
     }
 };
