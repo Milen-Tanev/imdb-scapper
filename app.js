@@ -6,8 +6,9 @@ const htmlParser = require("./utils/html-parser");
 const queuesFactory = require("./data-structures/queue");
 const modelsFactory = require("./models");
 const constants = require("./config/constants");
-/* the only new line is this one + deleted function wait */
 const wait = require("./utils/wait");
+// change
+const movieUrl = require("./utils/url-creator");
 
 require("./config/mongoose")(constants.connectionString);
 
@@ -15,7 +16,8 @@ let urlsQueue = queuesFactory.getQueue();
 
 constants.genres.forEach(genre => {
     for (let i = 0; i < constants.pagesCount; i += 1) {
-        let url = `http://www.imdb.com/search/title?genres=${genre}&title_type=feature&0sort=moviemeter,asc&page=${i+1}&view=simple&ref_=adv_nxt`;
+        // change
+        let url = movieUrl(genre, i);
         urlsQueue.push(url);
     }
 });
