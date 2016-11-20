@@ -2,6 +2,7 @@
 
 const SimpleMovie = require("./simple-movie-model");
 const DetailedMovie = require("./detailed-movie-model");
+const Actor = require("./simple-actor-model");
 
 module.exports = {
     getSimpleMovie(name, url) {
@@ -28,5 +29,18 @@ module.exports = {
             console.log(entry);
 
         });
+    },
+    getActor(name, image, description, movies) {
+        return new Actor({
+            name,
+            image,
+            description,
+            movies
+        });
+    },
+    insertActor(actor) {
+        actor.save();
+
+        console.log(`It was inserted actor ${actor.name}`);
     }
 };
